@@ -35,7 +35,7 @@ function insert_pessoa($pessoa)
 function update_pessoa($pessoa)
 {
     $conn = mysqli_connect('localhost', 'root', '', 'livros');
-    $sql = "UPDATE pessoa SET nome = '{$pessoa['nome']}', endereco = '{$pessoa['endereco']}', bairro = '{$pessoa['bairro']}', telefone = '{$pessoa['telefone']}', email = '{$pessoa['email']}', id_cidade = '{$pessoa['id_cidade']}' WHERE id = '{$id}'";
+    $sql = "UPDATE pessoa SET nome = '{$pessoa['nome']}', endereco = '{$pessoa['endereco']}', bairro = '{$pessoa['bairro']}', telefone = '{$pessoa['telefone']}', email = '{$pessoa['email']}', id_cidade = '{$pessoa['id_cidade']}' WHERE id = '{$pessoa['id']}'";
 
     $result = mysqli_query($conn, $sql);
 
@@ -46,17 +46,16 @@ function update_pessoa($pessoa)
 function lista_pessoa()
 {
     $conn = mysqli_connect('localhost', 'root', '', 'livros');
-    $query = "SELECT * FROM pessoa ORDER BY id";
+    // $query = "SELECT * FROM pessoa ORDER BY id";
 
-    $resultado = mysqli_query($conn, $query);
-    
-    $list = mysqli_fetch_all($resultado);
+    $result = mysqli_query($conn, "SELECT * FROM pessoa ORDER BY id");
+    $list = mysqli_fetch_all($result, MYSQLI_ASSOC);
     mysqli_close($conn);
     return $list;
 
 }
 
-function get_next_pesso()
+function get_next_pessoa()
 {
     $conn = mysqli_connect('localhost', 'root', '', 'livros');
     $result = mysqli_query($conn, "SELECT max(id) as next FROM pessoa");

@@ -1,31 +1,35 @@
 
 <?php
+require_once 'db/pessoa_db.php';
 $conn = mysqli_connect('localhost', 'root', '', 'livros');
 
 // Deletando Registro
-if (!empty($_GET['action']) AND $_GET['action'] == 'delete') {
-$id = $_GET['id'];
-mysqli_query($conn, "DELETE FROM pessoa WHERE id = '{$id}'");
+if (!empty($_GET['action']) AND $_GET['action'] == 'delete')
+{
+    $id = $_GET['id'];
+    exclui_pessoa($id);
 }
 // Fim Deletando Registro
 
 //Listando os usuários
-$query = "SELECT * FROM pessoa ORDER BY id";
-$resultado = mysqli_query($conn, $query);
+$pessoas = lista_pessoa();
 
 $items = '';
-while ($row = mysqli_fetch_assoc($resultado))
+if ($pessoas) 
 {
-    $item = file_get_contents('html/item.html');
-    $item = str_replace('{id}', $row['id'], $item);
-    $item = str_replace('{nome}', $row['nome'], $item);
-    $item = str_replace('{endereco}', $row['endereco'], $item);
-    $item = str_replace('{bairro}', $row['bairro'], $item);
-    $item = str_replace('{telefone}', $row['telefone'], $item);
-    $item = str_replace('{email}', $row['email'], $item);
-    $item = str_replace('{id_cidade}', $row['id_cidade'], $item);
+    foreach($pessoas as $pessoa)
+    {
+        $item = file_get_contents('html/item.html');
+        $item = str_replace('{id}', $pessoa['id'], $item);
+        $item = str_replace('{nome}', $pessoa['nome'], $item);
+        $item = str_replace('{endereco}', $pessoa['endereco'], $item);
+        $item = str_replace('{bairro}', $pessoa['bairro'], $item);
+        $item = str_replace('{telefone}', $pessoa['telefone'], $item);
+        $item = str_replace('{email}', $pessoa['email'], $item);
+        $item = str_replace('{id_cidade}', $pessoa['id_cidade'], $item);
 
-    $items .= $item;
+        $items .= $item;
+    }
 }
 
 $list = file_get_contents('html/list.html');
@@ -34,7 +38,5 @@ $list = str_replace('{items}', $items, $list);
 print $list;
 
 
-
-// var_dump($row);
 
 
