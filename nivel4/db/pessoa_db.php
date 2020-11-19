@@ -15,7 +15,7 @@ function get_pessoa_id($id)
 function exclui_pessoa($id)
 {
     $conn = mysqli_connect('localhost', 'root', '', 'livros');
-    $query = "DELETE * FROM pessoa WHERE id = '{$id}'";
+    $query = "DELETE FROM pessoa WHERE id = '{$id}'";
 
     $resultado = mysqli_query($conn, $query);
     mysqli_close($conn);
